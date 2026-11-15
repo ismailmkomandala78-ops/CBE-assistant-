@@ -35,7 +35,7 @@ if swali:
             try:
                 client = genai.Client(api_key=api_key)
                 response = client.models.generate_content(
-                    model="gemini-flash-latest",
+                    model="gemini-2.0-flash",
                     contents=f"Wewe ni mwalimu wa CBE Tanzania. Jibu kwa Kiswahili rahisi na mifano ya Tanzania. Swali: {swali}"
                 )
                 jibu = response.text
