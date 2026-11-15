@@ -43,3 +43,4 @@ if st.button("Uliza"):
         st.success("🤖: " + jibu(swali))
     else:
         st.warning("Tafadhali andika swali kwanza!")
+    
