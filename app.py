@@ -43,4 +43,5 @@ if swali:
             except Exception as e:
                 st.error(f"Samahani, kuna tatizo: {e}. Hakikisha Key ni sahihi.")
 
-        
+
+                 
