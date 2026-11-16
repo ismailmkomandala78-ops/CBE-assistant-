@@ -1,4 +1,3 @@
-import streamlit as st
 from google import genai
 
 st.set_page_config(page_title="CBE Assistant AI", page_icon="🎓")
@@ -43,4 +42,5 @@ if swali:
                 st.session_state.chat.append({"role": "assistant", "text": jibu})
             except Exception as e:
                 st.error(f"Samahani, kuna tatizo: {e}. Hakikisha Key ni sahihi.")
+
         
