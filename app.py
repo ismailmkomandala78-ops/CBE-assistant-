@@ -43,3 +43,4 @@ if swali:
                 st.session_state.chat.append({"role": "assistant", "text": jibu})
             except Exception as e:
                 st.error(f"Samahani, kuna tatizo: {e}. Hakikisha Key ni sahihi.")
+        
