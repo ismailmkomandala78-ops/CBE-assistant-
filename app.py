@@ -1,18 +1,28 @@
+import streamlit as st
 from google import genai
 
-st.set_page_config(page_title="CBE Assistant AI", page_icon="🎓")
+st.set_page_config(page_title="CBE Assistant - AI")
 st.title("🎓 CBE Assistant - AI")
 st.write("Sasa najibu swali LOLOTE kama ChatGPT!")
 
 # --- WEKA KEY HAPA ---
 st.sidebar.header("🔑 Setting")
-api_key = st.sidebar.text_input("Weka Gemini API Key yako hapa:", type="password", help="Copy kutoka Google AI Studio")
-st.sidebar.caption("Key yako haionekani na mtu, inakaa kwenye simu yako tu.")
+api_key = st.sidebar.text_input("Weka API Key yako hapa", type="password")
+st.sidebar.caption("Key yako haionekani kwa wengine")
 
 if not api_key:
-    st.warning("👈 Weka API Key yako hapo kushoto (sidebar) ili niweze kujibu.")
-    st.info("Huna Key? Nenda Google AI Studio > Copy key > Rudi hapa u-paste.")
+    st.warning("👉 Weka API Key yako hapo kando")
+    st.info("Huna Key? Nenda Google AI Studio")
     st.stop()
+
+client = genai.Client(api_key=api_key)
+
+MODELS = [
+    "gemini-3.8-flash",
+    "gemini-2.0-flash",
+    "gemini-1.5-flash",
+    "gemini-2.5-flash-lite",
+]
 
 # --- CHAT ---
 if "chat" not in st.session_state:
@@ -31,17 +41,20 @@ if swali:
 
     with st.chat_message("assistant"):
         with st.spinner("Nafikiria..."):
-            try:
-                client = genai.Client(api_key=api_key)
-                response = client.models.generate_content(
-                    model="gemini-3.8-flash",
-                    contents=f"Wewe ni mwalimu wa CBE Tanzania. Jibu kwa Kiswahili rahisi na mifano ya Tanzania. Swali: {swali}"
-                )
-                jibu = response.text
+            jibu = None
+            for model_name in MODELS:
+                try:
+                    response = client.models.generate_content(
+                        model=model_name,
+                        contents=f"Wewe ni mwalimu wa CBE. Jibu kwa Kiswahili rahisi: {swali}"
+                    )
+                    jibu = response.text
+                    break
+                except Exception:
+                    continue
+            
+            if jibu:
                 st.write(jibu)
                 st.session_state.chat.append({"role": "assistant", "text": jibu})
-            except Exception as e:
-                st.error(f"Samahani, kuna tatizo: {e}. Hakikisha Key ni sahihi.")
-
-
-                 
+            else:
+                st.warning("Pole Mkuu, Google imezidiwa sana sasa hivi. Subiri sekunde 20 kisha uliza tena.")
